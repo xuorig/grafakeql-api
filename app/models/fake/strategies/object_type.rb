@@ -1,5 +1,7 @@
 require 'ostruct'
 
+# Might never be needed since we generate
+# fake data for all leaves
 module Fake
   module Strategies
     class ObjectType

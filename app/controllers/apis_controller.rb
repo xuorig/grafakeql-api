@@ -1,17 +1,42 @@
+require 'securerandom'
+
 class ApisController < ApplicationController
   def create
-    schema_string = create_params[:schema]
-    schema = SchemaBuilder.build_from_definition(
-      schema_string
+    api = Api.create(
+      schema_definition: params[:schema_definition],
+      uuid: SecureRandom.uuid
     )
+
+    head :created, location: api_path(api.uuid)
   end
 
   def show
+    api = Api.find_by_uuid(params[:uuid])
+    render json: api
+  end
+
+  def query
+    api = Api.find_by_uuid(params[:uuid])
+
+    schema = SchemaBuilder.build_from_definition(api.schema_definition)
+
+    result = schema.execute(
+      params[:query],
+      variables: ensure_hash(params[:variables])
+    )
+
+    render json: result
   end
 
   private
 
-  def create_params
-    params.require(:schema)
+  def ensure_hash(query_variables)
+    if query_variables.blank?
+      {}
+    elsif query_variables.is_a?(String)
+      JSON.parse(query_variables)
+    else
+      query_variables
+    end
   end
 end
