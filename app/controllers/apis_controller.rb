@@ -7,7 +7,7 @@ class ApisController < ApplicationController
       uuid: SecureRandom.uuid
     )
 
-    head :created, location: api_path(api.uuid)
+    render json: { id: api.uuid }, status: :created
   end
 
   def show
