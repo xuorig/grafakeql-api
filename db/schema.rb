@@ -12,11 +12,14 @@
 
 ActiveRecord::Schema.define(version: 20161105162636) do
 
-  create_table "apis", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.text     "schema_definition", limit: 4294967295
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "apis", force: :cascade do |t|
+    t.text     "schema_definition"
     t.string   "uuid"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.index ["uuid"], name: "index_apis_on_uuid", using: :btree
   end
 

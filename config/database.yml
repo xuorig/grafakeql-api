@@ -1,11 +1,10 @@
 default: &default
-  adapter: mysql2
-  encoding: utf8
+  adapter: postgresql
+  encoding: unicode
   database: grafakeql_development
   pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  username: grafakeql
+  password: password
 
 development:
   <<: *default
