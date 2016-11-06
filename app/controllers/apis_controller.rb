@@ -25,6 +25,7 @@ class ApisController < ApplicationController
       variables: ensure_hash(params[:variables])
     )
 
+    puts result
     render json: result
   end
 
@@ -34,7 +35,7 @@ class ApisController < ApplicationController
     if query_variables.blank?
       {}
     elsif query_variables.is_a?(String)
-      JSON.parse(query_variables)
+      JSON.parse(query_variables, quirks_mode: true)
     else
       query_variables
     end

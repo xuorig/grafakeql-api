@@ -19,10 +19,10 @@ module Fake
       while stack.present?
         field = stack.pop
 
+        generate_fake_resolve(field)
+
         if field.type.is_a?(GraphQL::ObjectType)
           stack.concat(field.type.fields.values)
-        else
-          generate_fake_resolve(field)
         end
       end
     end
@@ -33,10 +33,11 @@ module Fake
 
     def get_strategy_for_graphql_type(type)
       # TODO Add all types
-      case type
-      when GraphQL::STRING_TYPE
+      if type.is_a?(GraphQL::ObjectType)
+        Fake::Strategies::ObjectType
+      elsif type == GraphQL::STRING_TYPE
         Fake::Strategies::String
-      when GraphQL::INT_TYPE
+      elsif type == GraphQL::INT_TYPE
         Fake::Strategies::Int
       end
     end
